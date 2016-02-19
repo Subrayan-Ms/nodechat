@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Test User</title>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  </head>
+  <body>
+           <center>  <h1> Socket Chat</h1>
+           <input type="text" id="username" placeholder="Your Name"> 
+           <button id="login"> Chat Now </button> <span id="error"> </span></center> 
+
+    <ul id="messages"></ul>
+
+      <input id="m" autocomplete="off" /><button id="chat">Send</button>
+
+
+           <script>
+                   $(document).ready(function() {
+                       $("#login").click(function() {
+                        
+                         var text = $("#username").val();
+                         if(text !== "") {
+                            	var id = Math.round((Math.random() * 1000000));
+                                var data = {user:text,id:id};                                 
+                                
+							   e.preventDefault();
+				  $.post('/login', {
+				    username: $('username').val(),
+				    password: $('password').val()
+				  })
+
+                        }    else {
+
+                            $("#error").html("<p style='color:red;'> Please enter a username </p> ");
+                       }             
+
+                      });
+                  });
+
+				var socket = io();
+				$('#chat').click(function(){
+				  socket.emit('chat message', $('#m').val());
+				  $('#m').val('');
+				  return false;
+				});
+				socket.on('chat message', function(msg){
+				  $('#messages').append($('<li>').text(msg));
+				});
+
+      
+          </script>
+   </body>
+</html>
